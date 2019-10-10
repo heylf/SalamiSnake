@@ -185,9 +185,9 @@ if ( demultiplexed == "no" ):
 
 	print("Barcode Files:")
 	print(BARCODE_FILES)
-	BARCODE_NEWFILES = name_generation_samples(DEMULTI_OUTDIR, SAMPLES[0], REP_NAME_CLIP, PAIR, "_trimmed.fastqsanger") 
+	BARCODE_NEWFILES = name_generation_samples(DEMULTI_OUTDIR, SAMPLES[0], REP_NAME_CLIP, PAIR, "_trimmed.fastq") 
 	if ( control == "yes" ):
-		BARCODE_NEWFILES = BARCODE_NEWFILES + name_generation_samples(DEMULTI_OUTDIR, SAMPLES[1], REP_NAME_CONTROL, PAIR, "_trimmed.fastqsanger")
+		BARCODE_NEWFILES = BARCODE_NEWFILES + name_generation_samples(DEMULTI_OUTDIR, SAMPLES[1], REP_NAME_CONTROL, PAIR, "_trimmed.fastq")
 	print("Barcode new Files:")
 	print(BARCODE_NEWFILES)
 
@@ -275,12 +275,12 @@ if ( control == "yes" ):
 				#MOTIF_DETECTION_OUTDIR + "/robust_peaks_refined_meme_chip/meme-chip.html"
 				#MOTIF_DETECTION_OUTDIR + "/rcas/rcas_summary.html"
 
-		ALL_NEW_FILE_NAMES = name_generation_samples(RENAMING, SAMPLES[0], REP_NAME_CLIP, PAIR, ".fastqsanger") + name_generation_samples(RENAMING, SAMPLES[1], REP_NAME_CONTROL, PAIR, ".fastqsanger")
+		ALL_NEW_FILE_NAMES = name_generation_samples(RENAMING, SAMPLES[0], REP_NAME_CLIP, PAIR, ".fastq") + name_generation_samples(RENAMING, SAMPLES[1], REP_NAME_CONTROL, PAIR, ".fastq")
 	
 	else:
 		rule all:
 			input: 
-				expand(PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r2_trimmed_bbconverted.fastqsanger", sample=MULTIPLEX_SAMPLE_NAME, replicate="rep1"),
+				expand(PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r2_trimmed_bbconverted.fastq", sample=MULTIPLEX_SAMPLE_NAME, replicate="rep1"),
 				expand(DEMULTI_OUTDIR + "/{sample}_{replicate}_diag.log", sample=MULTIPLEX_SAMPLE_NAME, replicate="rep1"),	
 				BARCODE_NEWFILES,
 				expand(MAPPING_OUTDIR + "/{sample}_{replicate}.bam", sample=SAMPLES[0], replicate=REP_NAME_CLIP),
@@ -292,7 +292,7 @@ if ( control == "yes" ):
 						sample_exp=SAMPLES[0], replicate_exp=REP_NAME_CLIP, sample_ctl=SAMPLES[1], replicate_ctl=REP_NAME_CONTROL)
 	
 		ALL_SAMPLES = DEMULTIPLEX_SAMPLES
-		ALL_NEW_FILE_NAMES = name_generation_samples(RENAMING, MULTIPLEX_SAMPLE_NAME, ["rep1"], PAIR, ".fastqsanger")
+		ALL_NEW_FILE_NAMES = name_generation_samples(RENAMING, MULTIPLEX_SAMPLE_NAME, ["rep1"], PAIR, ".fastq")
 
 else:
 	rule all:
@@ -306,7 +306,7 @@ else:
 			expand(MOTIF_DETECTION_OUTDIR + "/{sample}_{replicate}_meme_chip/meme-chip.html", sample=SAMPLES[0], replicate=REP_NAME_CLIP),
 			expand(STRUCTURE_PREDIC_OUTDIR + "/{sample}_{replicate}_structures.txt", sample=SAMPLES[0], replicate=REP_NAME_CLIP)
 
-	ALL_NEW_FILE_NAMES = name_generation_samples(RENAMING, SAMPLES[0], REP_NAME_CLIP, PAIR, ".fastqsanger")
+	ALL_NEW_FILE_NAMES = name_generation_samples(RENAMING, SAMPLES[0], REP_NAME_CLIP, PAIR, ".fastq")
 
 print("[NOTE] New names:")
 print(ALL_NEW_FILE_NAMES)
