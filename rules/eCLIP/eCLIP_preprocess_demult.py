@@ -1,13 +1,13 @@
 import random
 import math
-import os 
+import os
 
 rule fastqc_beginning:
     input:
-    	RENAMING + "/{sample}_{replicate}_{pair}.fastqsanger"
+    	RENAMING + "/{sample}_{replicate}_{pair}.fastq"
     output:
-    	FASTQC_BEG_OUTDIR + "/{sample}_{replicate}_{pair}.fastqsanger_fastqc.html",
-    	FASTQC_BEG_OUTDIR + "/{sample}_{replicate}_{pair}.fastqsanger_fastqc.zip"
+    	FASTQC_BEG_OUTDIR + "/{sample}_{replicate}_{pair}_fastqc.html",
+    	FASTQC_BEG_OUTDIR + "/{sample}_{replicate}_{pair}_fastqc.zip"
     threads: 2
     conda:
     	config["conda_envs"] + "/fastqc.yml"
@@ -17,28 +17,28 @@ rule fastqc_beginning:
 
 rule cutadapt_first_read_clip:
 	input:
-		first=RENAMING + "/{sample}_{replicate}_r1.fastqsanger",
-		second=RENAMING + "/{sample}_{replicate}_r2.fastqsanger"
+		first=RENAMING + "/{sample}_{replicate}_r1.fastq",
+		second=RENAMING + "/{sample}_{replicate}_r2.fastq"
 	output:
-		seq_first=CUTADAPT_OUTDIR + "/{sample}_{replicate}_r1.fastqsanger",
-		seq_second=CUTADAPT_OUTDIR + "/{sample}_{replicate}_r2.fastqsanger",
+		seq_first=CUTADAPT_OUTDIR + "/{sample}_{replicate}_r1.fastq",
+		seq_second=CUTADAPT_OUTDIR + "/{sample}_{replicate}_r2.fastq",
 		log=CUTADAPT_OUTDIR + "/{sample}_{replicate}.txt"
-	threads: 2 
+	threads: 2
 	conda:
 		config["conda_envs"] + "/cutadapt.yml"
 	shell:
 		"if [ ! -d {CUTADAPT_OUTDIR} ]; then mkdir {CUTADAPT_OUTDIR}; fi"
 		"&& echo {config[cutadapt]} >> {file_tool_params}"
-		"&& cutadapt -j {threads} {config[cutadapt]} " 
+		"&& cutadapt -j {threads} {config[cutadapt]} "
 		"--paired-output={output.seq_second} --output={output.seq_first} {input.first} {input.second} > {output.log}"
 
 rule remove_tail:
 	input:
-		first=CUTADAPT_OUTDIR + "/{sample}_{replicate}_r1.fastqsanger",
-		second=CUTADAPT_OUTDIR + "/{sample}_{replicate}_r2.fastqsanger"
+		first=CUTADAPT_OUTDIR + "/{sample}_{replicate}_r1.fastq",
+		second=CUTADAPT_OUTDIR + "/{sample}_{replicate}_r2.fastq"
 	output:
-		first=REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger",
-		second=REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_r2_trimmed.fastqsanger"
+		first=REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_r1_trimmed.fastq",
+		second=REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_r2_trimmed.fastq"
 	threads: 2
 	conda:
 		config["conda_envs"] + "/bctools.yml"
@@ -50,10 +50,10 @@ rule remove_tail:
 
 rule fastqc_after_adapter_removal:
     input:
-    	REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_{pair}_trimmed.fastqsanger"
+    	REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_{pair}_trimmed.fastq"
     output:
-    	FASTQC_ADAPT_OUTDIR + "/{sample}_{replicate}_{pair}_trimmed.fastqsanger_fastqc.html",
-    	FASTQC_ADAPT_OUTDIR + "/{sample}_{replicate}_{pair}_trimmed.fastqsanger_fastqc.zip"
+    	FASTQC_ADAPT_OUTDIR + "/{sample}_{replicate}_{pair}_trimmed_fastqc.html",
+    	FASTQC_ADAPT_OUTDIR + "/{sample}_{replicate}_{pair}_trimmed_fastqc.zip"
     threads: 2
     conda:
     	config["conda_envs"] + "/fastqc.yml"
@@ -64,11 +64,11 @@ rule fastqc_after_adapter_removal:
 # Activate if you need to remove UMIs and barcodes
 rule got_umis:
 	input:
-		first=REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger",
-		second=REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_r2_trimmed.fastqsanger"
+		first=REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_r1_trimmed.fastq",
+		second=REMOVE_TAIL_OUTDIR + "/{sample}_{replicate}_r2_trimmed.fastq"
 	output:
-		first=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger",
-		second=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r2_trimmed.fastqsanger",
+		first=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r1_trimmed.fastq",
+		second=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r2_trimmed.fastq",
 		log=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_log.txt"
 	threads: 2
 	conda:
@@ -80,8 +80,8 @@ rule got_umis:
 
 rule demultiplex:
 	input:
-		first=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger",
-		second=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r2_trimmed.fastqsanger",
+		first=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r1_trimmed.fastq",
+		second=PRE_FOR_UMI_OUTDIR + "/{sample}_{replicate}_r2_trimmed.fastq",
 		barcodes=config["barcodes"]
 	output:
 		diag=DEMULTI_OUTDIR + "/{sample}_{replicate}_diag.log",
@@ -104,5 +104,5 @@ rule renaming_demultiplex:
 	output:
 		BARCODE_NEWFILES
 	run:
-		for i in range(0, len(BARCODE_FILES)): 
+		for i in range(0, len(BARCODE_FILES)):
 			shell("cp " + input[i] + " " + output[i])

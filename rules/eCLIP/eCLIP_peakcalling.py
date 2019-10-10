@@ -1,6 +1,6 @@
 import random
 import math
-import os 
+import os
 
 #################
 ## PEAKCALLING ##
@@ -47,11 +47,10 @@ if ( control == "yes" ):
 				clip_bam_peakachu=expand(DEDUPLICAITON_OUTDIR + "/{sample}_sorted.bam", sample=REPLICATES_CLIP),
 				ctl_bam_peakachu=expand(DEDUPLICAITON_OUTDIR + "/{sample}_sorted.bam", sample=REPLICATES_CONTROL),
 				genome_fasta=GENOME_FASTA,
-				chr_sizes=GENOME_SIZES,
-				parameter_sets="/scratch/bi03/heylf/PanPeaker/PTBP1/parameter_sets.txt"
+				chr_sizes=GENOME_SIZES
 			output:
 				PEAKCALLING_OUTDIR + "/robust_peaks.bed"
-			threads: 10 
+			threads: 10
 			conda:
 				config["conda_envs"] + "/panpeaker.yml"
 			shell:
@@ -61,14 +60,12 @@ if ( control == "yes" ):
 				"&& python3 {config[panpeaker_script]}/PanPeaker.py {config[panpeaker]} -nt {threads} "
 				"-i {input.clip_bam} -b {input.clip_bai} -c {input.ctl_bam} -k {input.ctl_bai} -o {PEAKCALLING_OUTDIR} -g {input.genome_fasta} "
 				"--chr_sizes {input.chr_sizes} --signal_bam_peakachu {input.clip_bam_peakachu} --control_bam_peakachu {input.ctl_bam_peakachu} "
-				"--para_sets {input.parameter_sets}"
-				"&& echo --para_sets {input.parameter_sets} >> {file_tool_params}"
 				"&& source deactivate"
 
 		# Bedtools merge: To also report the strand, you could use the -c and -o operators.
-		# To collapse the p-values into one peak I simply used the mean of bedtools merge. 
-		# It is actually not right to simply use the average to combine p-values, but if 
-		# I use RCAS later on, then it should be enough just to have a score. 
+		# To collapse the p-values into one peak I simply used the mean of bedtools merge.
+		# It is actually not right to simply use the average to combine p-values, but if
+		# I use RCAS later on, then it should be enough just to have a score.
 		rule panpeaker_refine_output:
 			input:
 				PEAKCALLING_OUTDIR + "/robust_peaks.bed"
@@ -125,7 +122,7 @@ if ( control == "yes" ):
 
 	rule find_robust_peaks:
 		input:
-			expand(PEAKCALLING_OUTDIR + "/{sample_exp}_{replicate_exp}_{sample_ctl}_{replicate_ctl}_peaks_extended.bed", 
+			expand(PEAKCALLING_OUTDIR + "/{sample_exp}_{replicate_exp}_{sample_ctl}_{replicate_ctl}_peaks_extended.bed",
 				sample_exp=SAMPLES[0], replicate_exp=REP_NAME_CLIP, sample_ctl=SAMPLES[1], replicate_ctl=REP_NAME_CONTROL)
 		output:
 			ROBUSTPEAKS_OUTDIR + "/robust_between_all.bed"
@@ -149,7 +146,7 @@ else:
 				PEAKCALLING_OUTDIR + "/{sample}_{replicate}_peaks.bed"
 			conda:
 				config["conda_envs"] + "/piranha.yml"
-			threads: 2 
+			threads: 2
 			shell:
 				"if [ ! -d {PEAKCALLING_OUTDIR} ]; then mkdir {PEAKCALLING_OUTDIR}; fi"
 				"&& echo {config[piranha]} >> {file_tool_params}"

@@ -1,6 +1,6 @@
 import random
 import math
-import os 
+import os
 
 ###################
 ## DEDUPLICATION ##
@@ -46,4 +46,4 @@ rule sam_name_sort:
 	params:
 		tmp=DEDUPLICAITON_OUTDIR + "/{sample}_{replicate}"
 	shell:
-		"samtools sort -n -T {params.tmp} -o {output.name_sorted_bam} {input.sorted_bam}" 
+		"samtools sort -n -T {params.tmp} -o {output.name_sorted_bam} {input.sorted_bam}"

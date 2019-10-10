@@ -26,7 +26,7 @@ else:
 rule star:
 	input:
 		REF_GENOME_DIR + "/sjdbList.fromGTF.out.tab",
-		first_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger"
+		first_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastq"
 	output:
 		log=MAPPING_OUTDIR + "/{sample}_{replicate}.txt",
 		bam=MAPPING_OUTDIR + "/{sample}_{replicate}.bam",

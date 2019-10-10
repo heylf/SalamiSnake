@@ -46,8 +46,8 @@ if ( mapper == "STAR" ):
 		rule star:
 			input:
 				REF_GENOME_DIR + "/sjdbList.fromGTF.out.tab",
-				first_read=MAPPING_INDIR + "/{sample}_{replicate}_r2_trimmed.fastqsanger",
-				second_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger",
+				first_read=MAPPING_INDIR + "/{sample}_{replicate}_r2_trimmed.fastq",
+				second_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastq",
 			output:
 				log=MAPPING_OUTDIR + "/{sample}_{replicate}.txt",
 				bam=MAPPING_OUTDIR + "/{sample}_{replicate}.bam",
@@ -74,8 +74,8 @@ if ( mapper == "STAR" ):
 		rule star:
 			input:
 				REF_GENOME_DIR + "/sjdbList.fromGTF.out.tab",
-				first_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger",
-				second_read=MAPPING_INDIR + "/{sample}_{replicate}_r2_trimmed.fastqsanger",
+				first_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastq",
+				second_read=MAPPING_INDIR + "/{sample}_{replicate}_r2_trimmed.fastq",
 			output:
 				log=MAPPING_OUTDIR + "/{sample}_{replicate}.txt",
 				bam=MAPPING_OUTDIR + "/{sample}_{replicate}.bam",
@@ -105,8 +105,8 @@ if ( mapper == "Bowtie2"):
 		rule bowtie2:
 			input:
 				REF_GENOME_DIR + "/bowtie2index.1.bt2",
-				first_read=MAPPING_INDIR + "/{sample}_{replicate}_r2_trimmed.fastqsanger",
-				second_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger",
+				first_read=MAPPING_INDIR + "/{sample}_{replicate}_r2_trimmed.fastq",
+				second_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastq",
 			output:
 				sam=MAPPING_OUTDIR + "/{sample}_{replicate}.sam",
 				log=MAPPING_OUTDIR + "/{sample}_{replicate}_log.txt"
@@ -125,8 +125,8 @@ if ( mapper == "Bowtie2"):
 		rule bowtie2:
 			input:
 				REF_GENOME_DIR + "/bowtie2index.1.bt2",
-				first_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastqsanger",
-				second_read=MAPPING_INDIR + "/{sample}_{replicate}_r2_trimmed.fastqsanger",
+				first_read=MAPPING_INDIR + "/{sample}_{replicate}_r1_trimmed.fastq",
+				second_read=MAPPING_INDIR + "/{sample}_{replicate}_r2_trimmed.fastq",
 			output:
 				sam=MAPPING_OUTDIR + "/{sample}_{replicate}.sam",
 				log=MAPPING_OUTDIR + "/{sample}_{replicate}_log.txt"
