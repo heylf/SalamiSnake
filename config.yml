@@ -4,7 +4,7 @@
 ######################
 
 # input directory
-sample_data_dir: "/scratch/bi03/heylf/Plamen/KIRO/Cl8_cells_FLASH"
+sample_data_dir: "/scratch/bi03/heylf/Micha"
 
 clip_samples:
   #PTBP1_rep1: {r1: "ENCFF019TEQ", r2: "ENCFF689XJE"}
@@ -32,7 +32,7 @@ control_samples:
   IgG_rep2: {r1: "IgG_Cl8_Rb_XL10_rep2", r2: "IgG_Cl8_Rb_XL10_rep2"}
   # Kc
   #IgG_rep1: {r1: "IgG_Kc_Rb_XL11_rep1", r2: "IgG_Kc_Rb_XL11_rep1"}
-  #IgG_rep2: {r1: "IgG_Kc_Rb_XL11_rep2", r2: "IgG_Kc_Rb_XL11_rep2"}  
+  #IgG_rep2: {r1: "IgG_Kc_Rb_XL11_rep2", r2: "IgG_Kc_Rb_XL11_rep2"}
 
 # Cl8
 multiplex_setup: {r1: "bbmerged_XL10_S10_R1", r2: "bbmerged_XL10_S10_R2"}
@@ -63,21 +63,21 @@ mapper: "STAR"    # recommended for CLIP-Seq
 barcodes: "/scratch/bi03/heylf/Plamen/KIRO/Cl8_cells_FLASH/barcodes.txt"
 
 # genome directories
-# hg19 
+# hg19
 # ref_genome_dir: "/scratch/bi03/heylf/genomes/hg19"
 # genome_fasta: "/GRCh37.p13.genome.fa" # UCSC
 # genome_2bit: "/hg19.2bit"             # UCSC
-# genome_gtf: "/Genocode_hg19.gtf"   
+# genome_gtf: "/Genocode_hg19.gtf"
 # genome_sizes: "/hg19_chr_sizes.txt"   # UCSC
 # annotation_gtf: "/Genocode_hg19.gtf"
-# hg38 
+# hg38
 # ref_genome_dir: "/scratch/bi03/heylf/genomes/hg38"
 # genome_fasta: "/hg38.fa"  # UCSC
 # genome_2bit: "/hg38.2bit" # UCSC
 # genome_gtf: "/Gencode.v29.all.gtf"    # Gencode
 # genome_sizes: "/hg38.chrom.sizes.txt" # UCSC
 # annotation_gtf: "/Gencode.v29.all.gtf"
-# dm6 
+# dm6
 ref_genome_dir: "/scratch/bi03/heylf/genomes/dm6"
 genome_fasta: "/UCSC_edu_goldenPath_dm6_bigZips_dm6.fa"
 genome_2bit: "/UCSC_edu_goldenPath_dm6_bigZips_dm6.2bit"
@@ -132,7 +132,7 @@ panpeaker_script: "/scratch/bi03/heylf/PanPeaker"
 dreme: "/scratch/bi01/heylf/miniconda3/bin"
 stoatydive: "scripts/StoatyDive"
 
-# conda environment directory 
+# conda environment directory
 conda_envs: "../../envs"
 # subworkflows
 rules: "rules"
@@ -148,18 +148,18 @@ rules: "rules"
 
 # FLASH
 cutadapt: &cutadapt >-
-              --error-rate=0.1 --times=1 --overlap=5 -m 20 
-              -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG 
+              --error-rate=0.1 --times=1 --overlap=5 -m 20
+              -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG
               -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT
 
 # eCLIP
 # cutadapt: &cutadapt >-
-#               --error-rate=0.1 --times=1 --overlap=5 -m 20 
-#               -a NNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -g CTTCCGATCTACAAGTT -g CTTCCGATCTTGGTCCT -A AACTTGTAGATCGGA 
-#               -A AGGACCAAGATCGGA -A ACTTGTAGATCGGAA -A GGACCAAGATCGGAA -A CTTGTAGATCGGAAG 
-#               -A GACCAAGATCGGAAG -A TTGTAGATCGGAAGA -A ACCAAGATCGGAAGA -A TGTAGATCGGAAGAG 
-#               -A CCAAGATCGGAAGAG -A GTAGATCGGAAGAGC -A CAAGATCGGAAGAGC -A TAGATCGGAAGAGCG 
-#               -A AAGATCGGAAGAGCG -A AGATCGGAAGAGCGT -A GATCGGAAGAGCGTC -A ATCGGAAGAGCGTCG 
+#               --error-rate=0.1 --times=1 --overlap=5 -m 20
+#               -a NNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -g CTTCCGATCTACAAGTT -g CTTCCGATCTTGGTCCT -A AACTTGTAGATCGGA
+#               -A AGGACCAAGATCGGA -A ACTTGTAGATCGGAA -A GGACCAAGATCGGAA -A CTTGTAGATCGGAAG
+#               -A GACCAAGATCGGAAG -A TTGTAGATCGGAAGA -A ACCAAGATCGGAAGA -A TGTAGATCGGAAGAG
+#               -A CCAAGATCGGAAGAG -A GTAGATCGGAAGAGC -A CAAGATCGGAAGAGC -A TAGATCGGAAGAGCG
+#               -A AAGATCGGAAGAGCG -A AGATCGGAAGAGCGT -A GATCGGAAGAGCGTC -A ATCGGAAGAGCGTCG
 #               -A TCGGAAGAGCGTCGT -A CGGAAGAGCGTCGTG -A GGAAGAGCGTCGTGT
 
 ### REMOVE_TAIL ###
@@ -183,7 +183,7 @@ umi_dedup: &umi_dedup "--random-seed 0 --extract-umi-method read_id --method adj
 ### DEMULTIPLEXING ###
 # FLASH
 demultiplex: &demultiplex >-
-              SAME_HEADERS=false BPOS=READ_2 BCLEN=8 C=true ADD=false MM=1 MMD=1 Q=10 QUALITY_FORMAT=Standard XT=0 ZT=0 RCHAR=: GZ=false 
+              SAME_HEADERS=false BPOS=READ_2 BCLEN=8 C=true ADD=false MM=1 MMD=1 Q=10 QUALITY_FORMAT=Standard XT=0 ZT=0 RCHAR=: GZ=false
               KEEP_UNASSIGNED_READ=false STATS_ONLY=false
 
 ################
@@ -192,17 +192,17 @@ demultiplex: &demultiplex >-
 
 ### STAR ###
 star_all: &star_all >-
-    --outSAMtype BAM SortedByCoordinate --outSAMattributes All --outSAMstrandField intronMotif --outFilterIntronMotifs None --outSAMunmapped None 
+    --outSAMtype BAM SortedByCoordinate --outSAMattributes All --outSAMstrandField intronMotif --outFilterIntronMotifs None --outSAMunmapped None
     --outSAMprimaryFlag OneBestScore --outSAMmapqUnique '255' --outFilterType Normal --outFilterMultimapScoreRange '1' --outFilterMultimapNmax '10'
     --outFilterMismatchNmax '10' --outFilterMismatchNoverLmax '0.3' --outFilterMismatchNoverReadLmax '1.0' --outFilterScoreMin '0'
-    --outFilterMatchNmin '0' --seedSearchStartLmax '50' --seedSearchStartLmaxOverLread '1.0' --seedSearchLmax '0' 
-    --seedMultimapNmax '10000' --seedPerReadNmax '1000' --seedPerWindowNmax '50' --seedNoneLociPerWindow '10'  --alignIntronMin '21' --alignIntronMax '0' 
-    --alignSJoverhangMin '5' --alignSJDBoverhangMin '3' --alignSplicedMateMapLmin '0' --alignSplicedMateMapLminOverLmate '0.66'  
-    --alignWindowsPerReadNmax '10000' --alignTranscriptsPerWindowNmax '100' --alignTranscriptsPerReadNmax '10000' --alignEndsType EndToEnd  --twopassMode 'Basic' 
-    --twopass1readsN '-1' --limitBAMsortRAM '0' --limitOutSJoneRead '1000' --limitOutSJcollapsed '1000000' --limitSjdbInsertNsj '1000000' 
-# long reads 
+    --outFilterMatchNmin '0' --seedSearchStartLmax '50' --seedSearchStartLmaxOverLread '1.0' --seedSearchLmax '0'
+    --seedMultimapNmax '10000' --seedPerReadNmax '1000' --seedPerWindowNmax '50' --seedNoneLociPerWindow '10'  --alignIntronMin '21' --alignIntronMax '0'
+    --alignSJoverhangMin '5' --alignSJDBoverhangMin '3' --alignSplicedMateMapLmin '0' --alignSplicedMateMapLminOverLmate '0.66'
+    --alignWindowsPerReadNmax '10000' --alignTranscriptsPerWindowNmax '100' --alignTranscriptsPerReadNmax '10000' --alignEndsType EndToEnd  --twopassMode 'Basic'
+    --twopass1readsN '-1' --limitBAMsortRAM '0' --limitOutSJoneRead '1000' --limitOutSJcollapsed '1000000' --limitSjdbInsertNsj '1000000'
+# long reads
 # star_indi: &star_indi "--outFilterScoreMinOverLread '0.66' --outFilterMatchNminOverLread '0.66'"
-# small reads 
+# small reads
 star_indi: &star_indi "--outFilterScoreMinOverLread '0.3' --outFilterMatchNminOverLread '0.3'"
 # fragment size does not matter
 star_frag: &star_frag "--alignMatesGapMax '0'"
@@ -212,7 +212,7 @@ star_frag: &star_frag "--alignMatesGapMax '0'"
 ### Bowtie2 ###
 # -X --> maximum fragment length (important for MACS2)
 # --fr --> forward reverse orientation
-bowtie2: &bowtie2 "--end-to-end -X 999 --fr --seed 123"
+bowtie2: &bowtie2 "--end-to-end -X 999 --fr --seed 123 --very-sensitive"
 
 #######################
 ### Mapping Quality ###
@@ -222,10 +222,10 @@ gc_bias: &gc_bias "--fragmentLength 300 --effectiveGenomeSize 2451960000"
 fingerprint: &fingerprint "--binSize 100"
 multiBamSummary: &multiBamSummary "--binSize '1000' --distanceBetweenBins '0'"
 plotCorrelation: &plotCorrelation >-
-                    --corMethod 'spearman' --whatToPlot 'heatmap' --colorMap 'RdYlBu'  
+                    --corMethod 'spearman' --whatToPlot 'heatmap' --colorMap 'RdYlBu'
                     --plotTitle '' --plotWidth 11.0 --plotHeight 9.5  --plotFileFormat 'png'
 estimate_insert_size: &estimate_insert_size >-
-                      DEVIATIONS='10.0' MINIMUM_PCT='0.05' ASSUME_SORTED='false' 
+                      DEVIATIONS='10.0' MINIMUM_PCT='0.05' ASSUME_SORTED='false'
                       METRIC_ACCUMULATION_LEVEL='ALL_READS'  VALIDATION_STRINGENCY='LENIENT' QUIET=true VERBOSITY=ERROR
 
 ####################
@@ -238,7 +238,7 @@ estimate_insert_size: &estimate_insert_size >-
 # pureclip: &pureclip "-bdw 10 -bdwn 10 -iv 'chr1;chr2;chr3;'"
 # dm6 (small binding regions)
 pureclip: &pureclip "-bdw 5 -bdwn 5 -ld -antp"
-# mm10 
+# mm10
 # pureclip: &pureclip "-bdw 50 -bdwn 50 -antp -ld -iv 'chr1;chr2;chr3;'"
 
 ### PIRANHA ###
@@ -248,10 +248,10 @@ pureclip: &pureclip "-bdw 5 -bdwn 5 -ld -antp"
 piranha: &piranha "-s -p 0.05 -b 50 -i 50 -u 10"
 
 ### PEAKACHU ###
-# see my note to --pairwise_replicates 
+# see my note to --pairwise_replicates
 peakachu: &peakachu >-
-          --max_insert_size 200 --features '' --sub_features '' --min_cluster_expr_frac 0.01 --min_block_overlap 0.5 --min_max_block_expr 0.1 
-          --norm_method deseq --mad_multiplier 0.0 --fc_cutoff 2.0 --padj_threshold 0.05 --pairwise_replicates 
+          --max_insert_size 200 --features '' --sub_features '' --min_cluster_expr_frac 0.01 --min_block_overlap 0.5 --min_max_block_expr 0.1
+          --norm_method deseq --mad_multiplier 0.0 --fc_cutoff 2.0 --padj_threshold 0.05 --pairwise_replicates
 
 ### MACS2 ###
 # hg18/19 etc. --> -g hs
@@ -284,7 +284,7 @@ extract_cl: &extract_cl ""
 
 peaks_extend_frontiers: &peaks_extend_frontiers "-header -b 20"
 meme_chip: &meme_chip >-
-            -norc -order 1 -group-thresh 0.05 -group-weak 0.0 -filter-thresh 0.05  -meme-mod zoops -meme-minw 5 -meme-maxw 20 -meme-nmotifs 20  
+            -norc -order 1 -group-thresh 0.05 -group-weak 0.0 -filter-thresh 0.05  -meme-mod zoops -meme-minw 5 -meme-maxw 20 -meme-nmotifs 20
             -dreme-e 0.05 -dreme-m 20 -spamo-skip -fimo-skip -noecho -rna -seed 123 -centrimo-maxreg 100 -centrimo-local
 fimo: &fimo "--alpha 1.000000 --max-stored-scores 100000 --motif-pseudo 0.100000 --qv-thresh --thresh 0.000100 --verbosity 1"
 annotation: &annotation "-s -u"
