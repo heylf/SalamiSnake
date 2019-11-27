@@ -251,7 +251,7 @@ piranha: &piranha "-s -p 0.05 -b 50 -i 50 -u 10"
 # see my note to --pairwise_replicates
 peakachu: &peakachu >-
           --max_insert_size 200 --features '' --sub_features '' --min_cluster_expr_frac 0.01 --min_block_overlap 0.5 --min_max_block_expr 0.1
-          --norm_method deseq --mad_multiplier 0.0 --fc_cutoff 2.0 --padj_threshold 0.05 --pairwise_replicates
+          --norm_method deseq --mad_multiplier 2.0 --fc_cutoff 2.0 --padj_threshold 0.05 --pairwise_replicates
 
 ### MACS2 ###
 # hg18/19 etc. --> -g hs
